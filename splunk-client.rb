@@ -1,3 +1,5 @@
+# Author::        Christopher Brito (cbrito@gmail.com)
+# Original Repo:: https://github.com/cbrito/splunk-client
 
 require 'net/https'
 require 'cgi'
@@ -7,10 +9,7 @@ require 'nokogiri'
 class SplunkClient
   
   def initialize(username, password, host, port=8089)
-    @USER=username
-    @PASS=password
-    @HOST=host
-    @PORT=port
+    @USER=username; @PASS=password; @HOST=host; @PORT=port
     
     @SESSION_KEY = { 'authorization' => "Splunk #{get_session_key}" }
   end
