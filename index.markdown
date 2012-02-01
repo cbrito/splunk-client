@@ -5,7 +5,7 @@ title: Splunk REST Client for Ruby
 
 Library for interacting with Splunks REST API using Ruby.
 
-Code on GitHub: https://github.com/cbrito/splunk-client
+Code on GitHub: [https://github.com/cbrito/splunk-client](https://github.com/cbrito/splunk-client)
 
 ## Example Client: 
 	require 'splunk-client.rb'
