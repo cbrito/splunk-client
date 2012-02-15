@@ -47,7 +47,7 @@ class SplunkClient
   end
 
   def get_search_results(sid)
-    splunk_get_request("/services/search/jobs/#{sid}/results/")
+    splunk_get_request("/services/search/jobs/#{sid}/results?count=0")
   end
   
   private
