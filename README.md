@@ -10,13 +10,26 @@ Creating and using a client is easy:
 	splunk = SplunkClient.new("username", "password", "hostname")
 
 	# Create the Search
-	searchSid = splunk.create_search("test_search")
+	search = splunk.create_search("test_search")
 
 	# Wait for the Splunk search to complete
-	while (splunk.get_search_status(searchSid).to_i == 0)
-	  puts "Waiting for #{searchSid} to complete..."
-	  sleep 2
-	end
+	search.wait_for_results
 
 	#Print the results 
-	puts splunk.get_search_results(searchSid)
+	puts search.results
+
+## Tips
+
+* Want to spawn multiple jobs without blocking on each? Use `search.complete?` to poll for job status. 
+
+* Looking for more or less results? Use `search.results(maxResults)` to control how much is returned. (A value of 0 returns all results (this is the default.))
+
+## Revision History
+
+#### 0.5
+WARNING: Compatibility with prior versions will break as SplunkClient no longer returns a sid. It now returns a SplunkJob object.
+
+* Separated SplunkClient and SplunkJob into two separate objects. 
+
+#### 0.1
+* Initial Release
