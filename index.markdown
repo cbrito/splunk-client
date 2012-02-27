@@ -14,14 +14,11 @@ Code on GitHub: [https://github.com/cbrito/splunk-client](https://github.com/cbr
 	splunk = SplunkClient.new("username", "password", "hostname")
 
 	# Create the Search
-	searchSid = splunk.create_search("test_search")
+	search = splunk.create_search("test_search")
 
 	# Wait for the Splunk search to complete
-	while (splunk.get_search_status(searchSid).to_i == 0)
-	  puts "Waiting for #{searchSid} to complete..."
-	  sleep 2
-	end
+	search.wait_for_results
 
 	#Print the results 
-	puts splunk.get_search_results(searchSid)
+	puts search.results
 
