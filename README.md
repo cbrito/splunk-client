@@ -2,6 +2,12 @@
 
 Ruby library for dealing with Splunk searches and results using the Splunk REST API.
 
+## Installation
+
+	gem install splunk-client
+
+## Usage
+
 Creating and using a client is easy:
 
 	require 'splunk-client.rb'
