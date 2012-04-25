@@ -45,6 +45,10 @@ class SplunkClient
     @SESSION_KEY = { 'authorization' => "Splunk #{get_session_key}" }
   end
   
+  def search(search)
+    create_search(search)
+  end
+  
   def create_search(search)
     # Returns a SplunkJob 
     xml = splunk_post_request("/services/search/jobs",
