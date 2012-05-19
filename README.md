@@ -16,13 +16,18 @@ Creating and using a client is easy:
 	splunk = SplunkClient.new("username", "password", "hostname")
 
 	# Create the Search
-	search = splunk.create_search("test_search")
+	search = splunk.search("test_search")
 
 	# Wait for the Splunk search to complete
-	search.wait_for_results
+	search.wait # Blocks until the search returns
 
-	#Print the results 
+	#Print the raw XML results 
 	puts search.results
+
+	#Print the time and host of each result
+	search.parsedResults.each do |result|
+		puts result.host + " : " + result.time
+	end
 
 ## Tips
 
@@ -30,7 +35,16 @@ Creating and using a client is easy:
 
 * Looking for more or less results? Use `search.results(maxResults)` to control how much is returned. (A value of 0 returns all results (this is the default.))
 
+* Access Splunk fields in results via method calls 
+	`result = search.parsedResults`
+	`puts result[0].fieldName`
+
 ## Revision History
+
+#### 0.6
+* Added two new objects: SplunkResults and SplunkResult for to support:
+* Accessing Splunk fields via method calls
+    `search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}`
 
 #### 0.5
 WARNING: Compatibility with prior versions will break as SplunkClient no longer returns a sid. It now returns a SplunkJob object.
