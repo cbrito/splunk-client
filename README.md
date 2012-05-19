@@ -42,10 +42,10 @@ Creating and using a client is easy:
 
 * Looking for more or less results? Use `search.results(maxResults)` to control how much is returned. (A value of 0 returns all results (this is the default.))
 
-* Access Splunk fields in results via method calls:
+* Access Splunk fields in results via simple method calls
 
-    result = search.parsedResults
-    puts result[0].fieldName
+      result = search.parsedResults
+      puts result[0].fieldName
 
 
 ## Revision History
@@ -54,7 +54,10 @@ Creating and using a client is easy:
 * Added two new objects: SplunkResults and SplunkResult for to support:
 * Accessing Splunk fields via method calls
 
-	search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}
+    
+      search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}
+
+
 
 #### 0.5
 WARNING: Compatibility with prior versions will break as SplunkClient no longer returns a sid. It now returns a SplunkJob object.
