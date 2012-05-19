@@ -44,8 +44,8 @@ Creating and using a client is easy:
 
 * Access Splunk fields in results via simple method calls
 
-      result = search.parsedResults
-      puts result[0].fieldName
+      `result = search.parsedResults`
+      `puts result[0].fieldName`
 
 
 ## Revision History
@@ -55,7 +55,7 @@ Creating and using a client is easy:
 * Accessing Splunk fields via method calls
 
     
-      search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}
+      `search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}`
 
 
 
