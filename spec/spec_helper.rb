@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'simplecov'
 require 'simplecov-rcov'
 class SimpleCov::Formatter::MergedFormatter
