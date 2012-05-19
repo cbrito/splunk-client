@@ -2,6 +2,12 @@
 
 Ruby library for dealing with Splunk searches and results using the Splunk REST API.
 
+## Features
+
+* Session based authentication to Splunk REST interface
+* Create and check on the status of Splunk Jobs
+* Natural Ruby methods for interacting with search results (no need to parse XML or JSON or use Ruby Hashes)
+
 ## Installation
 
 	gem install splunk-client
@@ -10,7 +16,8 @@ Ruby library for dealing with Splunk searches and results using the Splunk REST 
 
 Creating and using a client is easy:
 
-	require 'splunk-client.rb'
+	require 'rubygems' 
+	require 'splunk-client'
 
 	# Create the client
 	splunk = SplunkClient.new("username", "password", "hostname")
@@ -24,7 +31,7 @@ Creating and using a client is easy:
 	#Print the raw XML results 
 	puts search.results
 
-	#Print the time and host of each result
+	# Use ruby methods for dealing with results:
 	search.parsedResults.each do |result|
 		puts result.host + " : " + result.time
 	end
@@ -35,16 +42,19 @@ Creating and using a client is easy:
 
 * Looking for more or less results? Use `search.results(maxResults)` to control how much is returned. (A value of 0 returns all results (this is the default.))
 
-* Access Splunk fields in results via method calls 
-	`result = search.parsedResults`
-	`puts result[0].fieldName`
+* Access Splunk fields in results via method calls:
+
+    result = search.parsedResults
+    puts result[0].fieldName
+
 
 ## Revision History
 
 #### 0.6
 * Added two new objects: SplunkResults and SplunkResult for to support:
 * Accessing Splunk fields via method calls
-    `search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}`
+
+	search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}
 
 #### 0.5
 WARNING: Compatibility with prior versions will break as SplunkClient no longer returns a sid. It now returns a SplunkJob object.
