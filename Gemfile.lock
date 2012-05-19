@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    splunk-client (0.5.2)
+    splunk-client (0.5.3)
       nokogiri
 
 GEM
