@@ -1,6 +1,9 @@
 # Author::        Christopher Brito (cbrito@gmail.com)
 # Original Repo:: https://github.com/cbrito/splunk-client
 
+require File.expand_path File.join(File.dirname(__FILE__), 'splunk_results')
+
+
 class SplunkJob
   attr_reader :jobId
 
@@ -31,5 +34,10 @@ class SplunkJob
   def cancel
     @client.control_job(@jobId, 'cancel')
   end
-
+  
+  def parsedResults
+    # Return a SplunkResults object with methods for the result fields
+    SplunkResults.new(results).results
+  end
+  
 end #class SplunkJob
