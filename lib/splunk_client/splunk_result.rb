@@ -14,7 +14,7 @@ class SplunkResult
     @result.field("[@k=\"_time\"]").value.text
   end
 
-  # Ex: splunkResult.sourceIp => nokogiriNode.result.field("[@k=\"sourceIp\"]").value.text
+  # Ex: splunkResult.sourceIp => nokogiriNode.field("[@k=\"sourceIp\"]").value.text
   def method_missing(name, *args, &blk)
     if args.empty? && blk.nil? && @result.field("[@k=\"#{name}\"]")
       @result.field("[@k=\"#{name}\"]").value.text

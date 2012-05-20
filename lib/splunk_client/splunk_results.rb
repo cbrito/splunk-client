@@ -20,7 +20,7 @@ class SplunkResults
       end
     else
       # Single results object
-      @results.push Splunkresults.new(nokoResults.results.result)
+      @results.push SplunkResult.new(nokoResults.results.result)
     end
     
     return @results
