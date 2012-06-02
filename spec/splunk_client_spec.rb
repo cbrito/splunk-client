@@ -47,6 +47,7 @@ describe SplunkClient do
       # Test the auto generated methods
       results.each do |result|
         result.respond_to?("time").should be(true)
+        result.respond_to?("raw").should be(true)
         result.respond_to?("host").should be(true)
         result.time.should_not be(nil)
         result.host.should_not be(nil)
