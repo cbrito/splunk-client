@@ -50,6 +50,7 @@ describe SplunkClient do
         result.respond_to?("raw").should be(true)
         result.respond_to?("host").should be(true)
         result.time.should_not be(nil)
+        result.raw.should_not be(nil)
         result.host.should_not be(nil)
       end
 
