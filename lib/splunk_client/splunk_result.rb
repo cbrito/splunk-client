@@ -8,10 +8,15 @@ class SplunkResult
   def initialize(nokogiriNode)
     @result = nokogiriNode
   end
-  
-  # Ex: splunkResult.time => nokogiriNode.result.field("[@k=\"_time\"]").value.text  
+
+  # Ex: splunkResult.time => nokogiriNode.result.field("[@k=\"_time\"]").value.text
   def time
     @result.field("[@k=\"_time\"]").value.text
+  end
+
+  # Ex: splunkResult.raw => nokogiriNode.result.field("[@k=\"_raw\"]").v.text
+  def raw
+    @result.field("[@k=\"_raw\"]").v.text
   end
 
   # Ex: splunkResult.sourceIp => nokogiriNode.field("[@k=\"sourceIp\"]").value.text
@@ -22,7 +27,7 @@ class SplunkResult
       super
     end
   end
-  
+
   def respond_to?(name)
     begin
       unless @result.field("[@k=\"#{name}\"]").nil? then true else super end
@@ -30,5 +35,5 @@ class SplunkResult
       super
     end
   end
-  
+
 end #class SplunkResult
