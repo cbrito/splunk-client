@@ -50,7 +50,13 @@ Creating and using a client is easy:
 
 ## Revision History
 
+#### 0.7
+
+* Added alias support for raw field 
+* Added test cases for all Splunk meta fields
+
 #### 0.6
+
 * Added two new objects: SplunkResults and SplunkResult for to support:
 * Accessing Splunk fields via method calls
 
@@ -65,4 +71,5 @@ WARNING: Compatibility with prior versions will break as SplunkClient no longer 
 * Separated SplunkClient and SplunkJob into two separate objects. 
 
 #### 0.1
+
 * Initial Release
