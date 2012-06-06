@@ -19,6 +19,15 @@ require File.expand_path File.join(File.dirname(__FILE__), '../lib/splunk-client
 # "syslog"     |  "/var/log/kernel.log"
 # "syslog"     |  "/var/log/system.log"
 # The following are the Splunk login details.
-ENV['SPLUNK_USER'] = "admin"
-ENV['SPLUNK_PASSWD'] =  "password"
-ENV['SPLUNK_HOST'] = "localhost"
+def splunk_user
+  ENV['SPLUNK_USER'] ||= "admin"
+end
+
+def splunk_passwd
+  ENV['SPLUNK_PASSWD'] ||= "changeme"
+end
+
+def splunk_host
+  ENV['SPLUNK_HOST'] ||= "localhost"
+end
+

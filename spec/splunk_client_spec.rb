@@ -2,7 +2,7 @@ require File.expand_path File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SplunkClient do
 
-  let(:splunk_client) { SplunkClient.new(ENV['SPLUNK_USER'], ENV['SPLUNK_PASSWD'], ENV['SPLUNK_HOST']) }
+  let(:splunk_client) { SplunkClient.new(splunk_user, splunk_passwd, splunk_host) }
   let(:search) { 'sourcetype="syslog" "kernel" earliest=-30m' }
 
   context "initialization" do
@@ -40,25 +40,7 @@ describe SplunkClient do
       end
     end
 
-    #############################################
-    #Meta fields in each of the search result
-    #<field>_cd</field>
-    #<field>_indextime</field>
-    #<field>_raw</field>
-    #<field>_serial</field>
-    #<field>_si</field>
-    #<field>_sourcetype</field>
-    #<field>_time</field>
-    #<field>host</field>
-    #<field>index</field>
-    #<field>linecount</field>
-    #<field>source</field>
-    #<field>sourcetype</field>
-    #<field>splunk_server</field>
-    #############################################
-    #TODO: Implement those missing methods
     it "responds to method calls by the name of meta fields in the results" do
-      #%w[cd indextime raw serial si sourcetype time host index linecount source splunk_server].each do |method_call|
       %w[raw sourcetype time host index linecount source splunk_server].each do |method_call|
         parsed_results.first.respond_to?(method_call).should be_true
         parsed_results.first.send(method_call.to_sym).should_not be_nil
