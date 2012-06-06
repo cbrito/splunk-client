@@ -13,3 +13,24 @@ require 'rspec/autorun'
 
 require 'json'
 require File.expand_path File.join(File.dirname(__FILE__), '../lib/splunk-client')
+<<<<<<< HEAD
+=======
+
+# Suppose you have a local Splunk instance, and have the following logs monitored:
+# Source Type  |  Log file
+# "syslog"     |  "/var/log/kernel.log"
+# "syslog"     |  "/var/log/system.log"
+# The following are the Splunk login details.
+def splunk_user
+  ENV['SPLUNK_USER'] ||= "admin"
+end
+
+def splunk_passwd
+  ENV['SPLUNK_PASSWD'] ||= "changeme"
+end
+
+def splunk_host
+  ENV['SPLUNK_HOST'] ||= "localhost"
+end
+
+>>>>>>> 3225437... Updated spec tests, removed debugger from gemspec.

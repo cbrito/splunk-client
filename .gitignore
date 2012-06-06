@@ -1,3 +1,8 @@
 coverage/*
 *.gem
 *.bundle
+<<<<<<< HEAD
+=======
+.idea/
+.rvmrc
+>>>>>>> 3225437... Updated spec tests, removed debugger from gemspec.

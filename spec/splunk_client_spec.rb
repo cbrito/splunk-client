@@ -2,12 +2,17 @@ require File.expand_path File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SplunkClient do
 
+<<<<<<< HEAD
   before :each do
     @user = ENV['SPLUNK_USER']
     @pass = ENV['SPLUNK_PASSWD']
     @host = ENV['SPLUNK_HOST']
     @splunk_client = SplunkClient.new(@user, @pass, @host)
   end
+=======
+  let(:splunk_client) { SplunkClient.new(splunk_user, splunk_passwd, splunk_host) }
+  let(:search) { 'sourcetype="syslog" "kernel" earliest=-30m' }
+>>>>>>> 3225437... Updated spec tests, removed debugger from gemspec.
 
   context "initialization" do
 
@@ -54,6 +59,14 @@ describe SplunkClient do
         result.host.should_not be(nil)
       end
 
+<<<<<<< HEAD
+=======
+    it "responds to method calls by the name of meta fields in the results" do
+      %w[raw sourcetype time host index linecount source splunk_server].each do |method_call|
+        parsed_results.first.respond_to?(method_call).should be_true
+        parsed_results.first.send(method_call.to_sym).should_not be_nil
+      end
+>>>>>>> 3225437... Updated spec tests, removed debugger from gemspec.
     end
   end
 
