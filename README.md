@@ -61,7 +61,7 @@ Creating and using a client is easy:
 * Accessing Splunk fields via method calls
 
     
-      `search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}`
+      search.parsedResults.each {|result| puts result.$$FIELD_NAME$$}
 
 
 
@@ -77,7 +77,7 @@ WARNING: Compatibility with prior versions will break as SplunkClient no longer 
 
 ## Versioning
 
-As of 0.5, this software uses (Semantic Versioning)[http://semver.org/]. Basically, this means that any given minor release number is backwards compatible. Patch releases are just that, and major releases may break compatibility. 
+As of 0.5, this software uses [Semantic Versioning](http://semver.org/). Basically, this means that any given minor release number is backwards compatible. Patch releases are just that, and major releases **may** break compatibility. 
 
 If you contribute to this software, and I hope you do, please leave the VERSION file alone. Alternatively, update the VERSION file in a commit on it's own, so that we can cherry-pick around it when merging code. 
 
