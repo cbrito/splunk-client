@@ -10,9 +10,12 @@ class SplunkResults
   attr_reader :results
 
   def initialize(rawResults)
-    nokoResults = Nokogiri::Slop(rawResults)
     @results = Array.new
-    
+
+    return @results if rawResults.strip.empty?
+
+    nokoResults = Nokogiri::Slop(rawResults)
+
     if nokoResults.results.result.respond_to?("length")
       # Multiple Results, build array
       nokoResults.results.result.each do |resultObj|
