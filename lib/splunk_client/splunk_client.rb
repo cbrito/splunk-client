@@ -6,6 +6,7 @@ require 'cgi'
 require 'rubygems'
 require 'nokogiri'
 require File.expand_path File.join(File.dirname(__FILE__), 'splunk_job')
+require File.expand_path File.join(File.dirname(__FILE__), 'splunk_alarm')
 
 class SplunkClient
 
@@ -40,6 +41,16 @@ class SplunkClient
     url = "/services/search/jobs/#{sid}/results?count=#{maxResults}"
     url += "&output_mode=#{mode}" unless mode.nil?
     splunk_get_request(url)
+  end
+  
+  def get_alarm_list(user="nobody")
+    xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts")
+
+  end
+  
+  def get_alarm(alarmName, user="nobody")
+    xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts/#{alarmName}")
+    SplunkAlarm.new(Nokogiri::Slop(xml), self )
   end
 
   def control_job(sid, action)
