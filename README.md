@@ -6,6 +6,7 @@ Ruby library for dealing with Splunk searches and results using the Splunk REST 
 
 * Session based authentication to Splunk REST interface
 * Create and check on the status of Splunk Jobs
+* Retrieve Splunk alerts
 * Natural Ruby methods for interacting with search results (no need to parse XML or JSON or use Ruby Hashes)
 
 ## Installation
@@ -36,6 +37,29 @@ Creating and using a client is easy:
 		puts result.host + " : " + result.time
 	end
 
+Working with Splunk alerts:
+
+    # Create the client
+	splunk = SplunkClient.new("username", "password", "hostname")
+	
+	# Fetch all the open alerts
+	alertEntries = splunk.get_alarm_list.entries
+	
+	# What's the name of this alert?
+	alertEntries[1].alert.title
+	
+	# What time did a particular alert trigger?
+	alertEntries[1].alert.trigger_time_rendered
+	
+	# How many times has a particular alert fired?
+	alertEntries[1].alert.triggered_alerts
+	
+	# Fetch the raw XML results of the alert
+	alertEntries[1].alert.results
+	
+	# Work with the results as a Ruby object
+	alertEntries[1].alert.parsedResults
+
 ## Tips
 
 * Want to spawn multiple jobs without blocking on each? Use `search.complete?` to poll for job status. 
@@ -49,6 +73,12 @@ Creating and using a client is easy:
 
 
 ## Revision History
+
+#### 0.8
+
+* Added preliminary GET support for alarms within the Splunk REST API
+
+TODO: Write test-cases for alerts methods.
 
 #### 0.7
 
