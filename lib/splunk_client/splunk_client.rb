@@ -96,3 +96,4 @@ end #class SplunkClient
 class SplunkSessionError < SecurityError
   # Exception class for handling invalid session tokens received by the gem
 end
+
