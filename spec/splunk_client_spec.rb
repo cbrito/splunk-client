@@ -3,13 +3,17 @@ require File.expand_path File.join(File.dirname(__FILE__), 'spec_helper')
 describe SplunkClient do
 
   let(:splunk_client) { SplunkClient.new(splunk_user, splunk_passwd, splunk_host) }
-  let(:search) { 'sourcetype="syslog" "kernel" earliest=-30m' }
+  let(:search) { 'sourcetype="syslog" earliest=-1m' }
 
   context "initialization" do
 
+    it "should raise an exception" do
+      expect { SplunkClient.new("bad_user", "bad_passwd", splunk_host) }.to raise_error
+    end
+
     it "creates a session key" do
       splunk_client.send(:get_session_key).should_not be(nil)
-    end
+    end    
 
   end
 

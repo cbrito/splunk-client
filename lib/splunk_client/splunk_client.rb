@@ -13,8 +13,14 @@ class SplunkClient
 
   def initialize(username, password, host, port=8089)
     @USER=username; @PASS=password; @HOST=host; @PORT=port
-
-    @SESSION_KEY = { 'authorization' => "Splunk #{get_session_key}" }
+    
+    sessionKey = get_session_key
+    
+    if (sessionKey == "")
+      raise SplunkSessionError, 'Session key is invalid. Please check your username, password and host' 
+    else
+      @SESSION_KEY = { 'authorization' => "Splunk #{sessionKey}" }
+    end
   end
 
   def search(search)
@@ -87,3 +93,6 @@ class SplunkClient
 
 end #class SplunkClient
 
+class SplunkSessionError < SecurityError
+  # Exception class for handling invalid session tokens received by the gem
+end
