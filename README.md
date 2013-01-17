@@ -71,6 +71,28 @@ Working with Splunk alerts:
       `result = search.parsedResults`
       `puts result[0].fieldName`
 
+## FAQ
+
+#### What is Splunk?
+
+I'm making an assumption that if you are looking for a Ruby client to interact with Splunk's REST API, you have some idea of what Splunk does. If not, you should totally check it out. It makes working with logs awesome. 
+
+http://www.splunk.com
+
+#### Where can I find information on Splunk's REST API and the methods available in this gem?
+
+The Splunk REST API reference can be found here:
+http://docs.splunk.com/Documentation/Splunk/5.0.1/RESTAPI/RESTsearch#GET_alerts.2Ffired_alerts
+
+This gem currently only provides access to the /search/ and /alerts/ APIs. The gem attempts to make use of `method_missing` to implement ruby methods where fields are returned from a given Splunk search. 
+
+#### Why do I get an exception when using `wait` on a search?
+
+Very little excetption handling occurs with-in the gem. It is up to consumers to ensure they have appropriate network connectivity to their splunk endpoint, and that the credentials are correct. 
+
+Insufficient network connectivity will raise a `TimeOut` exception. 
+
+Incorrect credentials will raise a Nokogiri error referencing `Undefined namespace prefix: //s:key[@name='isDone']`
 
 ## Revision History
 
