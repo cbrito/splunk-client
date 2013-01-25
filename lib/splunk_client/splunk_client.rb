@@ -50,8 +50,8 @@ class SplunkClient
     splunk_get_request(url)
   end
   
-  def get_alert_list(user="nobody")
-    xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts")
+  def get_alert_list(user="nobody", count=30)
+    xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts?count=#{count}")
     SplunkAlertFeed.new(Nokogiri::Slop(xml), self)
   end
   
