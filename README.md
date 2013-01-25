@@ -43,7 +43,7 @@ Working with Splunk alerts:
 	splunk = SplunkClient.new("username", "password", "hostname")
 	
 	# Fetch all the open alerts
-	alertEntries = splunk.get_alarm_list.entries
+	alertEntries = splunk.get_alert_list.entries
 	
 	# What's the name of this alert?
 	alertEntries[1].alert.title
