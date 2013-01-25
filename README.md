@@ -82,7 +82,7 @@ http://www.splunk.com
 #### Where can I find information on Splunk's REST API and the methods available in this gem?
 
 The Splunk REST API reference can be found here:
-http://docs.splunk.com/Documentation/Splunk/5.0.1/RESTAPI/RESTsearch#GET_alerts.2Ffired_alerts
+http://docs.splunk.com/Documentation/Splunk/5.0.1/RESTAPI/RESTsearch
 
 This gem currently only provides access to the /search/ and /alerts/ APIs. The gem attempts to make use of `method_missing` to implement ruby methods where fields are returned from a given Splunk search. 
 
