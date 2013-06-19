@@ -3,7 +3,7 @@
 Gem::Specification.new do |gem|
   gem.authors     = ["Christopher Brito"]
   gem.email       = ['cbrito@gmail.com']
-  gem.description = %q{splunk-client is a simple Ruby library for interfacing with Splunk's REST API. It supports the retrieving of results via native Ruby methods.}
+  gem.description = %q{splunk-client is a simple Ruby library for interfacing with Splunk's REST API. It is API 5 compatable and provides an elegant native Ruby iterface for working with Splunk results and alerts.}
   gem.summary     = %q{Ruby Library for interfacing with Splunk's REST API}
   gem.homepage    = 'http://github.com/cbrito/splunk-client'
   gem.date        = Date.today
