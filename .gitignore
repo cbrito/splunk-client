@@ -3,3 +3,4 @@ coverage/*
 *.bundle
 .idea/
 .rvmrc
+splunk_env_setup.rb
