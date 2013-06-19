@@ -16,6 +16,10 @@ class SplunkResults
 
     nokoResults = Nokogiri::Slop(rawResults)
 
+    if ((nokoResults.children.first.children.nil?) ||(nokoResults.children.first.children.count == 0))
+      return @results
+    end
+    
     if nokoResults.results.result.respond_to?("length")
       # Multiple Results, build array
       nokoResults.results.result.each do |resultObj|

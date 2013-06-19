@@ -77,7 +77,7 @@ class SplunkClient
   end
 
   def splunk_get_request(path)
-    splunk_http_request.get(path, @SESSION_KEY).body
+    splunk_http_request.get(path, @SESSION_KEY.merge({'Content-Type' => 'application/x-www-form-urlencoded'})).body
   end
 
   def splunk_post_request(path, data=nil, headers=nil)
