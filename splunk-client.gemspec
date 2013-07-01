@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.description = %q{splunk-client is a simple Ruby library for interfacing with Splunk's REST API. It is API 5 compatable and provides an elegant native Ruby iterface for working with Splunk results and alerts.}
   gem.summary     = %q{Ruby Library for interfacing with Splunk's REST API}
   gem.homepage    = 'http://github.com/cbrito/splunk-client'
-  gem.date        = Date.today
+  gem.date        = Time.now.strftime("%Y-%m-%d")
 
   gem.files       = Dir.glob("{bin,lib,spec}/**/*") + %w(VERSION LICENSE README.md Rakefile Gemfile Gemfile.lock)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
