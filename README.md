@@ -96,6 +96,10 @@ Incorrect credentials will raise a Nokogiri error referencing `Undefined namespa
 
 ## Revision History
 
+#### 0.9
+
+* Added support for HTTP proxy servers.
+
 #### 0.8
 
 * Added preliminary GET support for alarms within the Splunk REST API
