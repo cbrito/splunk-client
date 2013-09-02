@@ -12,14 +12,14 @@ require File.expand_path File.join(File.dirname(__FILE__), 'splunk_alert_feed')
 
 class SplunkClient
 
-  def initialize(username, password, host, port=8089, proxy_url = '')
-    @USER=username; @PASS=password; @HOST=host; @PORT=port
+  def initialize(username, password, host, port=8089, proxy_url = '', read_time_out = 60)
+    @USER=username; @PASS=password; @HOST=host; @PORT=port; @READ_TIMEOUT = read_time_out
     @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
 
     sessionKey = get_session_key
 
     if (sessionKey == "")
-      raise SplunkSessionError, 'Session key is invalid. Please check your username, password and host' 
+      raise SplunkSessionError, 'Session key is invalid. Please check your username, password and host'
     else
       @SESSION_KEY = { 'authorization' => "Splunk #{sessionKey}" }
     end
@@ -77,9 +77,10 @@ class SplunkClient
     else
       http = Net::HTTP.new(@HOST, @PORT)
     end
+    http.read_timeout = @READ_TIMEOUT
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    return http
+    http
   end
 
   def splunk_get_request(path)
