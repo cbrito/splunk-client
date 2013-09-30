@@ -41,7 +41,7 @@ class SplunkJob
 
   def results(maxResults=0, mode=nil)
     unless @succeeded
-      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_SLEEP_TIME} seconds")
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
     end
 
     # Return search results
@@ -54,7 +54,7 @@ class SplunkJob
 
   def parsedResults
     unless @succeeded
-      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_SLEEP_TIME} seconds")
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
     end
 
     # Return a SplunkResults object with methods for the result fields
