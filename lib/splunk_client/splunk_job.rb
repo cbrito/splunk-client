@@ -8,7 +8,8 @@ class SplunkJob
   attr_reader :jobId
   attr_accessor :succeeded
 
-  REQUEST_LIMIT = 20
+  REQUEST_LIMIT = 40
+  REQUEST_WAIT_TIME = 4
 
   def initialize(jobId, clientPointer)
     @jobId  = jobId
@@ -27,7 +28,7 @@ class SplunkJob
       if (request_count += 1) >= REQUEST_LIMIT
         return @succeeded = false
       end
-      sleep 4
+      sleep REQUEST_WAIT_TIME
     end
     @succeeded = true
   end
@@ -39,16 +40,23 @@ class SplunkJob
   end
 
   def results(maxResults=0, mode=nil)
+    unless @succeeded
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
+    end
+
     # Return search results
-    return '' unless @succeeded
     @client.get_search_results(@jobId, maxResults, mode)
   end
 
   def cancel
     @client.control_job(@jobId, 'cancel')
   end
-  
+
   def parsedResults
+    unless @succeeded
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
+    end
+
     # Return a SplunkResults object with methods for the result fields
     SplunkResults.new(results).results
   end
