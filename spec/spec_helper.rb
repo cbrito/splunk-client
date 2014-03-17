@@ -20,14 +20,17 @@ require File.expand_path File.join(File.dirname(__FILE__), '../lib/splunk-client
 
 # The following are the Splunk login details.
 def splunk_user
-  ENV['SPLUNK_USER'] ||= "admin"
+  ENV['SPLUNK_USER'] || "admin"
 end
 
 def splunk_passwd
-  ENV['SPLUNK_PASSWD'] ||= "changeme"
+  ENV['SPLUNK_PASSWD'] || "changeme"
 end
 
 def splunk_host
-  ENV['SPLUNK_HOST'] ||= "localhost"
+  ENV['SPLUNK_HOST'] || "localhost"
 end
 
+def splunk_use_ssl
+  ENV['USE_SSL'] || false
+end
