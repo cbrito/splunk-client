@@ -96,9 +96,13 @@ Incorrect credentials will raise a Nokogiri error referencing `Undefined namespa
 
 ## Revision History
 
+### 0.10
+
+* Added support for turning off SSL `use_ssl`
+
 #### 0.9
 
-* Added support for HTTP proxy servers.
+* Added support for HTTP proxy servers and read timeouts.
 
 #### 0.8
 
