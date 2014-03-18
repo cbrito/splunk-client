@@ -12,8 +12,12 @@ require File.expand_path File.join(File.dirname(__FILE__), 'splunk_alert_feed')
 
 class SplunkClient
 
-  def initialize(username, password, host, port=8089, proxy_url = '', read_time_out = 60)
-    @USER=username; @PASS=password; @HOST=host; @PORT=port; @READ_TIMEOUT = read_time_out
+  def initialize(username, password, host, opts = {})
+    @USER=username; @PASS=password; @HOST=host;
+    @PORT = opts[:port] || 8089
+    @READ_TIMEOUT = opts[:read_time_out] || 60
+    @USE_SSL = opts[:use_ssl] || false
+    proxy_url = opts[:proxy_url] || ''
     @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
 
     sessionKey = get_session_key
@@ -78,8 +82,10 @@ class SplunkClient
       http = Net::HTTP.new(@HOST, @PORT)
     end
     http.read_timeout = @READ_TIMEOUT
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    if @USE_SSL
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
     http
   end
 
