@@ -1,0 +1,2 @@
+class SplunkWaitTimeout < Exception
+end

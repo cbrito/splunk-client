@@ -14,12 +14,13 @@ class SplunkClient
 
   def initialize(username, password, host, port=8089, proxy_url = '', read_time_out=60, use_ssl=true)
     @USER=username; @PASS=password; @HOST=host; @PORT=port; @SSL=use_ssl; @READ_TIMEOUT = read_time_out
+
     @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
 
     sessionKey = get_session_key
 
     if (sessionKey == "")
-      raise SplunkSessionError, 'Session key is invalid. Please check your username, password and host' 
+      raise SplunkSessionError, 'Session key is invalid. Please check your username, password and host'
     else
       @SESSION_KEY = { 'authorization' => "Splunk #{sessionKey}" }
     end
@@ -80,7 +81,7 @@ class SplunkClient
     http.read_timeout = @READ_TIMEOUT
     http.use_ssl = @SSL
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    return http
+    http
   end
 
   def splunk_get_request(path)
