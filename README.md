@@ -96,6 +96,10 @@ Incorrect credentials will raise a Nokogiri error referencing `Undefined namespa
 
 ## Revision History
 
+### 1.0.0
+
+* Refactored the growing list of items to pass into `SplunkClient.new` into an options hash.
+
 ### 0.10
 
 * Added support for turning off SSL `use_ssl`
