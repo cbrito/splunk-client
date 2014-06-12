@@ -80,7 +80,7 @@ class SplunkClient
     if @PROXY_URI
       http = Net::HTTP.new(@HOST, @PORT, @PROXY_URI.host, @PROXY_URI.port)
     else
-      http = Net::HTTP.new(@HOST, @PORT)
+      http = Net::HTTP.new(@HOST, @PORT, nil)
     end
     http.read_timeout = @READ_TIMEOUT
     http.use_ssl = @SSL
