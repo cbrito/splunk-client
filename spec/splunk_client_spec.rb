@@ -2,7 +2,7 @@ require File.expand_path File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SplunkClient do
 
-  let(:splunk_client) { SplunkClient.new(splunk_user, splunk_passwd, splunk_host) }
+  let(:splunk_client) { SplunkClient.new(splunk_user, splunk_passwd, splunk_host, use_ssl: splunk_use_ssl) }
   let(:search) { 'sourcetype="syslog" earliest=-1m' }
 
   context "initialization" do
