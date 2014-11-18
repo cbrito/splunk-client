@@ -34,8 +34,8 @@ class SplunkClient
   def create_search(search, start_time = nil, end_time = nil)
     start_time, end_time = start_time.to_s, end_time.to_s
     data_string = "search=#{CGI::escape("search #{search}")}"
-    data_string += "&searchEarliestTime=#{CGI.escape(start_time)}" unless end_time.empty?
-    data_string += "&searchLatestTime=#{CGI.escape(end_time)}" unless end_time.empty?
+    data_string += "&earliest_time=#{CGI.escape(start_time)}" unless end_time.empty?
+    data_string += "&latest_time=#{CGI.escape(end_time)}" unless end_time.empty?
 
     xml = splunk_post_request("/services/search/jobs", data_string, @SESSION_KEY)
     @doc = Nokogiri::Slop(xml)
@@ -108,5 +108,5 @@ class SplunkSessionError < SecurityError
 end
 
 class SplunkWaitTimeout < Exception
-  # Raised when splunk request times out 
+  # Raised when splunk request times out
 end
