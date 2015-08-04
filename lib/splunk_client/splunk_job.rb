@@ -9,7 +9,7 @@ class SplunkJob
   attr_accessor :succeeded
 
   REQUEST_LIMIT = 40
-  REQUEST_WAIT_TIME = 4
+  REQUEST_WAIT_TIME = 8
 
   def initialize(jobId, clientPointer)
     @jobId  = jobId
@@ -22,7 +22,6 @@ class SplunkJob
   end
 
   def wait_for_results
-    # Wait for the Splunk search to complete
     request_count = 0
     until complete?
       if (request_count += 1) >= REQUEST_LIMIT
@@ -32,7 +31,6 @@ class SplunkJob
     end
     @succeeded = true
   end
-
 
   def complete?
     # Return status of job
@@ -60,5 +58,5 @@ class SplunkJob
     # Return a SplunkResults object with methods for the result fields
     SplunkResults.new(results).results
   end
-  
+
 end #class SplunkJob
