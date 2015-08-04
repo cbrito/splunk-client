@@ -26,14 +26,14 @@ class SplunkClient
     end
   end
 
-  def search(search, start_time = nil, end_time = nil)
-    create_search(search, start_time, end_time)
+  def search(search, start_time = nil, end_time = nil, query_prefix = 'search')
+    create_search(search, start_time, end_time, query_prefix)
   end
 
   # Returns a SplunkJob
-  def create_search(search, start_time = nil, end_time = nil)
+  def create_search(search, start_time = nil, end_time = nil, query_prefix = 'search')
     start_time, end_time = start_time.to_s, end_time.to_s
-    data_string = "search=#{CGI::escape("search #{search}")}"
+    data_string = "search=#{CGI::escape("#{query_prefix} #{search}")}"
     data_string += "&earliest_time=#{CGI.escape(start_time)}" unless end_time.empty?
     data_string += "&latest_time=#{CGI.escape(end_time)}" unless end_time.empty?
 
