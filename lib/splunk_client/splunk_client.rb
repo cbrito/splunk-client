@@ -88,10 +88,14 @@ class SplunkClient
 
   def splunk_get_request(path)
     splunk_http_request.get(path, @SESSION_KEY.merge({'Content-Type' => 'application/x-www-form-urlencoded'})).body
+    raise SplunkEmptyResponse, 'Splunk response is empty.' unless result
+    result
   end
 
   def splunk_post_request(path, data=nil, headers=nil)
     splunk_http_request.post(path,data,headers).body
+    raise SplunkEmptyResponse, 'Splunk response is empty.' unless result
+    result
   end
 
   def get_session_key
@@ -109,4 +113,8 @@ end
 
 class SplunkWaitTimeout < Exception
   # Raised when splunk request times out
+end
+
+class SplunkEmptyResponse < Exception
+  # Raised when splunk response is empty
 end
