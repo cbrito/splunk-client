@@ -11,10 +11,11 @@ class SplunkJob
   REQUEST_LIMIT = 40
   REQUEST_WAIT_TIME = 8
 
-  def initialize(jobId, clientPointer)
+  def initialize(jobId, clientPointer, wait_time_out = nil)
     @jobId  = jobId
     @client = clientPointer #SplunkClient object pointer
     @succeeded = false
+    @wait_time_out = wait_time_out || REQUEST_LIMIT * REQUEST_WAIT_TIME
   end
 
   def wait
@@ -24,7 +25,8 @@ class SplunkJob
   def wait_for_results
     request_count = 0
     until complete?
-      if (request_count += 1) >= REQUEST_LIMIT
+      if (request_count += 1) >= REQUEST_LIMIT || (REQUEST_WAIT_TIME * request_count) >= @wait_time_out
+        cancel
         return @succeeded = false
       end
       sleep REQUEST_WAIT_TIME
@@ -39,7 +41,7 @@ class SplunkJob
 
   def results(maxResults=0, mode=nil)
     unless @succeeded
-      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{@wait_time_out} seconds")
     end
 
     # Return search results
@@ -52,7 +54,7 @@ class SplunkJob
 
   def parsedResults
     unless @succeeded
-      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{REQUEST_LIMIT * REQUEST_WAIT_TIME} seconds")
+      raise SplunkWaitTimeout.new("Splunk query execution time expired. Max wait time: #{@wait_time_out} seconds")
     end
 
     # Return a SplunkResults object with methods for the result fields

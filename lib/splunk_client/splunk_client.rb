@@ -12,10 +12,8 @@ require File.expand_path File.join(File.dirname(__FILE__), 'splunk_alert_feed')
 
 class SplunkClient
 
-  def initialize(username, password, host, port=8089, proxy_url = '', read_time_out = 60, use_ssl = true)
-    @USER=username; @PASS=password; @HOST=host; @PORT=port; @READ_TIMEOUT = read_time_out
-    @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
-    @use_ssl = use_ssl
+  def initialize(opts = {})
+    initialize_instance_variables opts.symbolize_keys
 
     sessionKey = get_session_key
 
@@ -40,7 +38,7 @@ class SplunkClient
     xml = splunk_post_request("/services/search/jobs", data_string, @SESSION_KEY)
     @doc = Nokogiri::Slop(xml)
 
-    return SplunkJob.new(@doc.xpath("//sid").text, self)
+    return SplunkJob.new(@doc.xpath("//sid").text, self, @wait_time_out)
   end
 
   def get_search_status(sid)
@@ -74,7 +72,19 @@ class SplunkClient
 
   private ###############################################################################
 
-  def splunk_http_request()
+  def initialize_instance_variables(opts)
+    @USER = opts.fetch(:username)
+    @PASS = opts.fetch(:password)
+    @HOST = opts.fetch(:host)
+    @PORT = opts.fetch(:port, 8089)
+    @READ_TIMEOUT = opts.fetch(:read_time_out, 60)
+    proxy_url = opts.fetch(:proxy_url, '')
+    @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
+    @use_ssl = opts.fetch(:use_ssl, true)
+    @wait_time_out = opts.fetch(:wait_time_out, 320)
+  end
+
+  def splunk_http_request
     if @PROXY_URI
       http = Net::HTTP.new(@HOST, @PORT, @PROXY_URI.host, @PROXY_URI.port)
     else
@@ -82,7 +92,7 @@ class SplunkClient
     end
     http.read_timeout = @READ_TIMEOUT
     http.use_ssl = @use_ssl
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if @use_ssl
     http
   end
 

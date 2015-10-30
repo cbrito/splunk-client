@@ -21,7 +21,17 @@ Creating and using a client is easy:
 	require 'splunk-client'
 
 	# Create the client
-	splunk = SplunkClient.new("username", "password", "hostname")
+    splunk = SplunkClient.new(username: "username", password: "password", host: "hostname")
+    options for SplunkClient.new:
+    * username *
+    * password *
+    * host *
+    * port (default 8089)
+    * proxy_url (default '')
+    * use_ssl (default true)
+    * read_time_out (default 60)
+    * wait_time_out (default 320)
+
 
 	# Create the Search
 	search = splunk.search("test_search")
@@ -40,7 +50,7 @@ Creating and using a client is easy:
 Working with Splunk alerts:
 
     # Create the client
-	splunk = SplunkClient.new("username", "password", "hostname")
+    splunk = SplunkClient.new(username: "username", password: "password", host: "hostname")
 	
 	# Fetch all the open alerts
 	alertEntries = splunk.get_alert_list.entries
