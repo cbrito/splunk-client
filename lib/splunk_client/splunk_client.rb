@@ -12,14 +12,8 @@ require File.expand_path File.join(File.dirname(__FILE__), 'splunk_alert_feed')
 
 class SplunkClient
 
-  def initialize(username, password, host, opts = {})
-    @USER=username; @PASS=password; @HOST=host;
-    @PORT = opts[:port] || 8089
-    @READ_TIMEOUT = opts[:read_time_out] || 60
-    @USE_SSL = opts[:use_ssl] || false
-    proxy_url = opts[:proxy_url] || ''
-    
-    @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
+  def initialize(opts = {})
+    initialize_instance_variables opts.symbolize_keys
 
     sessionKey = get_session_key
 
@@ -30,19 +24,21 @@ class SplunkClient
     end
   end
 
-  def search(search)
-    create_search(search)
+  def search(search, start_time = nil, end_time = nil, query_prefix = 'search')
+    create_search(search, start_time, end_time, query_prefix)
   end
 
-  def create_search(search)
-    # Returns a SplunkJob 
-    xml = splunk_post_request("/services/search/jobs",
-                              "search=#{CGI::escape("search #{search}")}",
-                              @SESSION_KEY)
+  # Returns a SplunkJob
+  def create_search(search, start_time = nil, end_time = nil, query_prefix = 'search')
+    start_time, end_time = start_time.to_s, end_time.to_s
+    data_string = "search=#{CGI::escape("#{query_prefix} #{search}")}"
+    data_string += "&earliest_time=#{CGI.escape(start_time)}" unless end_time.empty?
+    data_string += "&latest_time=#{CGI.escape(end_time)}" unless end_time.empty?
 
+    xml = splunk_post_request("/services/search/jobs", data_string, @SESSION_KEY)
     @doc = Nokogiri::Slop(xml)
 
-    return SplunkJob.new(@doc.xpath("//sid").text, self)
+    return SplunkJob.new(@doc.xpath("//sid").text, self, @wait_time_out)
   end
 
   def get_search_status(sid)
@@ -56,12 +52,12 @@ class SplunkClient
     url += "&output_mode=#{mode}" unless mode.nil?
     splunk_get_request(url)
   end
-  
+
   def get_alert_list(user="nobody", count=30)
     xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts?count=#{count}")
     SplunkAlertFeed.new(Nokogiri::Slop(xml), self)
   end
-  
+
   def get_alert(alarmName, user="nobody")
     xml = splunk_get_request("/servicesNS/#{user}/search/alerts/fired_alerts/#{alarmName}")
     SplunkAlert.new(Nokogiri::Slop(xml).css("entry")[0], self)
@@ -76,24 +72,40 @@ class SplunkClient
 
   private ###############################################################################
 
+  def initialize_instance_variables(opts)
+    @USER = opts.fetch(:username)
+    @PASS = opts.fetch(:password)
+    @HOST = opts.fetch(:host)
+    @PORT = opts.fetch(:port, 8089)
+    @READ_TIMEOUT = opts.fetch(:read_time_out, 60)
+    proxy_url = opts.fetch(:proxy_url, '')
+    @PROXY_URI = URI(proxy_url) if proxy_url && !proxy_url.empty?
+    @use_ssl = opts.fetch(:use_ssl, true)
+    @wait_time_out = opts.fetch(:wait_time_out, 320)
+  end
+
   def splunk_http_request
     if @PROXY_URI
       http = Net::HTTP.new(@HOST, @PORT, @PROXY_URI.host, @PROXY_URI.port)
     else
-      http = Net::HTTP.new(@HOST, @PORT)
+      http = Net::HTTP.new(@HOST, @PORT, nil)
     end
     http.read_timeout = @READ_TIMEOUT
-    http.use_ssl = @SSL
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    http.use_ssl = @use_ssl
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if @use_ssl
     http
   end
 
   def splunk_get_request(path)
-    splunk_http_request.get(path, @SESSION_KEY.merge({'Content-Type' => 'application/x-www-form-urlencoded'})).body
+    result = splunk_http_request.get(path, @SESSION_KEY.merge({'Content-Type' => 'application/x-www-form-urlencoded'})).body
+    raise SplunkEmptyResponse, 'Splunk response is empty.' unless result
+    result
   end
 
   def splunk_post_request(path, data=nil, headers=nil)
-    splunk_http_request.post(path,data,headers).body
+    result = splunk_http_request.post(path,data,headers).body
+    raise SplunkEmptyResponse, 'Splunk response is empty.' unless result
+    result
   end
 
   def get_session_key
@@ -109,3 +121,10 @@ class SplunkSessionError < SecurityError
   # Exception class for handling invalid session tokens received by the gem
 end
 
+class SplunkWaitTimeout < Exception
+  # Raised when splunk request times out
+end
+
+class SplunkEmptyResponse < Exception
+  # Raised when splunk response is empty
+end
